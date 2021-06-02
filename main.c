@@ -47,7 +47,7 @@ int main(void) {
             }
 
             printf("\nplayer %d's turn to play and %d\n\n", player, play);
-            draw(&tableau);
+            draw(tableau);
 
             play = menu_play(&tableau, player);
         }

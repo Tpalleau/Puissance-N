@@ -1,9 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
-
-
 int add_token(grid *tableau, int column, int player) {
     int not_added = 1;
     for (int i = tableau->size -1; i > -1; i-=1) {
@@ -21,10 +15,10 @@ int add_token(grid *tableau, int column, int player) {
 
 int remove_token(grid *tableau, int column){
     int not_removed = 1;
-    for (int i = tableau->size; i > -1; i-=1) {
-        if (tableau->list[i][column] != ' ' && not_removed){
-            if (tableau->list[i][column]){
-                tableau->list[i][column] = ' ';
+    for (int line = 0; line < tableau->size; ++line) {
+        if (tableau->list[line][column] != ' ' && not_removed){
+            if (tableau->list[line][column]){
+                tableau->list[line][column] = ' ';
             }
             not_removed = 0;
         }
