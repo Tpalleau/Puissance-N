@@ -3,7 +3,6 @@
 #include <ctype.h>
 #include <string.h>
 
-//#include "grid.h"
 
 int add_token(grid *tableau, int column, int player) {
     int not_added = 1;
@@ -53,7 +52,7 @@ int menu_play(grid *tableau, int player){
             printf("Please chose an option by typing the corresponding number:\n");
             scanf("%d", &choice);
 
-        } while (choice < 0 || choice > 4);
+        } while (choice < 1 || choice > 3);
 
 
         // for option 1 & 2 check if column is valid
