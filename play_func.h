@@ -1,3 +1,5 @@
+#include "save_func.h"
+
 int add_token(grid *tableau, int column, int player) {
     int not_added = 1;
     for (int i = tableau->size -1; i > -1; i-=1) {
@@ -67,6 +69,7 @@ int menu_play(grid *tableau, int player){
                 action_impossible = remove_token(*&tableau, column);
                 break;
             case 3:
+                save_file(*tableau);
                 continu_game = 0;
                 break;
         }
