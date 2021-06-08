@@ -1,9 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
-
-//#include "grid.h"
+#include "save_func.h"
 
 int add_token(grid *tableau, int column, int player) {
     int not_added = 1;
@@ -22,10 +17,10 @@ int add_token(grid *tableau, int column, int player) {
 
 int remove_token(grid *tableau, int column){
     int not_removed = 1;
-    for (int i = tableau->size; i > -1; i-=1) {
-        if (tableau->list[i][column] != ' ' && not_removed){
-            if (tableau->list[i][column]){
-                tableau->list[i][column] = ' ';
+    for (int line = 0; line < tableau->size; ++line) {
+        if (tableau->list[line][column] != ' ' && not_removed){
+            if (tableau->list[line][column]){
+                tableau->list[line][column] = ' ';
             }
             not_removed = 0;
         }
@@ -53,7 +48,7 @@ int menu_play(grid *tableau, int player){
             printf("Please chose an option by typing the corresponding number:\n");
             scanf("%d", &choice);
 
-        } while (choice < 0 || choice > 4);
+        } while (choice < 1 || choice > 3);
 
 
         // for option 1 & 2 check if column is valid
@@ -74,6 +69,7 @@ int menu_play(grid *tableau, int player){
                 action_impossible = remove_token(*&tableau, column);
                 break;
             case 3:
+                save_file(*tableau);
                 continu_game = 0;
                 break;
         }
