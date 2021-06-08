@@ -9,7 +9,7 @@ int menu(){
         printf("Please chose an option by typing the corresponding number:\n");
         scanf("%d", &choice);
 
-    } while (choice < 0 || choice > 4);
+    } while (choice < 1 || choice > 3);
 
     return choice;
 }

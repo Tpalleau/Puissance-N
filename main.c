@@ -19,21 +19,31 @@ int main(void) {
 
     // main variables
     int player = 2;
+    grid tableau;
 
+    //app loop
     while (run_program){
-        // play/load/quit
-        menu_choice = menu();
-
-        if (menu_choice == 3){
-            run_program = 0;
-            continue;
-        }else{
-            game_options(&num_player, &grid_size);
-        }
-        // afficher les règles
-        grid tableau = {grid_size};
         reset(&tableau);
 
+        // play/load/quit
+        menu_choice = menu();
+        switch (menu_choice) {
+            case 1:
+                //num of player and grid size
+                game_options(&num_player, &grid_size);
+                tableau.size = grid_size;
+                break;
+
+            case 2: break;
+
+            case 3: run_program=0;
+                continue;
+        }
+        // afficher les règles
+
+
+
+        //game loop
         while (play){
             if (player == 1){
                 if (num_player == 1){
