@@ -2,12 +2,12 @@
 
 int add_token(grid *tableau, int column, int player) {
     int not_added = 1;
-    for (int i = tableau->size -1; i > -1; i-=1) {
-        if (tableau->list[i][column] == ' ' && not_added){
+    for (int line = tableau->size -1; line > -1; line-=1) {
+        if (tableau->list[line][column] == ' ' && not_added){
             if (player == 1){
-                tableau->list[i][column] = 'X';
+                tableau->list[line][column] = 'X';
             }else{
-                tableau->list[i][column] = 'O';
+                tableau->list[line][column] = 'O';
             }
             not_added = 0;
         }
@@ -29,7 +29,7 @@ int remove_token(grid *tableau, int column){
     return (not_removed);
 }
 
-int menu_play(grid *tableau, int player){
+int menu_play(grid *tableau, int player, int num_players){
 
     int continu_game = 1;
     int choice = 0;
@@ -69,7 +69,7 @@ int menu_play(grid *tableau, int player){
                 action_impossible = remove_token(*&tableau, column);
                 break;
             case 3:
-                save_file(*tableau);
+                save_file(*tableau, num_players, player);
                 continu_game = 0;
                 break;
         }

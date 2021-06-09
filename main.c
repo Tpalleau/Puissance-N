@@ -18,11 +18,12 @@ int main(void) {
     int grid_size = 0;
 
     // main variables
-    int player = 2;
+    int player = 1;
     grid tableau;
 
     //app loop
     while (run_program){
+        printf("%d", ' ');
         reset(&tableau);
 
         // play/load/quit
@@ -34,7 +35,8 @@ int main(void) {
                 tableau.size = grid_size;
                 break;
 
-            case 2: break;
+            case 2: load_file(&tableau, &num_player, &player);
+                break;
 
             case 3: run_program=0;
                 continue;
@@ -45,6 +47,11 @@ int main(void) {
 
         //game loop
         while (play){
+            printf("\nplayer %d's turn to play\n\n", player);
+            draw(tableau);
+
+            play = menu_play(&tableau, player, num_player);
+
             if (player == 1){
                 if (num_player == 1){
                     printf("find a friend the computer doesnt want to play with you\n");
@@ -56,10 +63,6 @@ int main(void) {
                 player = 1;
             }
 
-            printf("\nplayer %d's turn to play and %d\n\n", player, play);
-            draw(tableau);
-
-            play = menu_play(&tableau, player);
         }
 
         run_program = 0;
