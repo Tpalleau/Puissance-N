@@ -17,7 +17,6 @@ void reset(grid *matrix){
     }
 }
 void draw(grid matrix){
-    printf("tableau size %d", matrix.size);
     //top part of the table
     printf("\n%c", 201);
     for (int element = 0; element < matrix.size - 1; ++element) {

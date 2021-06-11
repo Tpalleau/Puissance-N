@@ -32,9 +32,9 @@ void load_file(grid *matrix, int *num_players, int *turn){
     matrix->size = size;
 
     char letter;
-    for (int i = 0; i < 7; ++i) {
+    for (int i = 0; i < size; ++i) {
         letter = getc(data);
-        for (int j = 0; j < 7; ++j) {
+        for (int j = 0; j < size; ++j) {
             letter = getc(data);
             matrix->list[i][j] = letter;
         }

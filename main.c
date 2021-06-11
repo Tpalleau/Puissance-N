@@ -13,6 +13,7 @@ int main(void) {
     int play = 1;
 
     // output func variables
+    int line = 0;
     int menu_choice = 0;
     int num_player = 0;
     int grid_size = 0;
@@ -23,7 +24,6 @@ int main(void) {
 
     //app loop
     while (run_program){
-        printf("%d", ' ');
         reset(&tableau);
 
         // play/load/quit
@@ -50,7 +50,7 @@ int main(void) {
             printf("\nplayer %d's turn to play\n\n", player);
             draw(tableau);
 
-            play = menu_play(&tableau, player, num_player);
+            play = menu_play(&tableau, player, &line, num_player);
 
             if (player == 1){
                 if (num_player == 1){
