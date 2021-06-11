@@ -17,6 +17,7 @@ int main(void) {
     int menu_choice = 0;
     int num_player = 0;
     int grid_size = 0;
+    int unusable_column = -1;
 
     // main variables
     int player = 1;
@@ -35,7 +36,7 @@ int main(void) {
                 tableau.size = grid_size;
                 break;
 
-            case 2: load_file(&tableau, &num_player, &player);
+            case 2: load_file(&tableau, &num_player, &player, &unusable_column);
                 break;
 
             case 3: run_program=0;
@@ -50,7 +51,7 @@ int main(void) {
             printf("\nplayer %d's turn to play\n\n", player);
             draw(tableau);
 
-            play = menu_play(&tableau, player, &line, num_player);
+            play = menu_play(&tableau, player, &line, num_player, &unusable_column);
 
             if (player == 1){
                 if (num_player == 1){

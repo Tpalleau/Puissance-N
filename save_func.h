@@ -1,4 +1,4 @@
-void save_file(grid matrix, int num_players, int turn){
+void save_file(grid matrix, int num_players, int turn, int unusable_column){
     FILE *data;
 
     data = fopen("data", "w");
@@ -6,6 +6,7 @@ void save_file(grid matrix, int num_players, int turn){
     if (data != 0){
         fprintf(data, "%d\n", num_players);
         fprintf(data, "%d\n", turn);
+        fprintf(data, "%d\n", unusable_column);
         fprintf(data, "%d",matrix.size);
         for (int line = 0; line < matrix.size; ++line) {
             fprintf(data, "\n");
@@ -20,7 +21,7 @@ void save_file(grid matrix, int num_players, int turn){
     fclose(data);
 }
 
-void load_file(grid *matrix, int *num_players, int *turn){
+void load_file(grid *matrix, int *num_players, int *turn, int *unusable_column){
     FILE *data;
     int size;
 
@@ -28,6 +29,7 @@ void load_file(grid *matrix, int *num_players, int *turn){
 
     fscanf(data, "%d", *&num_players);
     fscanf(data, "%d", *&turn);
+    fscanf(data, "%d", *&unusable_column);
     fscanf(data, "%d", &size);
     matrix->size = size;
 

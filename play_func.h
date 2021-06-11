@@ -34,7 +34,7 @@ int remove_token(grid *tableau, int column){
     return (not_removed);
 }
 
-int menu_play(grid *tableau, int player, int *line, int num_players){
+int menu_play(grid *tableau, int player, int *line, int num_players, int *unusable_column){
 
     int continu_game = 1;
     int choice = 0;
@@ -68,13 +68,19 @@ int menu_play(grid *tableau, int player, int *line, int num_players){
         // call corresponding func to action chosen
         switch (choice) {
             case 1:
-                action_impossible = add_token(*&tableau, column, *&line, player);
+                if (*unusable_column != column){
+                    action_impossible = add_token(*&tableau, column, *&line, player);
+                    *unusable_column = -1;
+                }else{
+                    action_impossible = 1;
+                }
                 break;
             case 2:
                 action_impossible = remove_token(*&tableau, column);
+                *unusable_column = column;
                 break;
             case 3:
-                save_file(*tableau, num_players, player);
+                save_file(*tableau, num_players, player, *unusable_column);
                 continu_game = 0;
                 break;
         }
@@ -83,15 +89,18 @@ int menu_play(grid *tableau, int player, int *line, int num_players){
             if (action_impossible){
                 printf("action is not possible...\n");
             }
-            //win_diag(*&tableau, column, *&line, tableau->size) == 1
-            //win_column(*&tableau, column, tableau->size) == 1 || win_line(*&tableau, column, *&line, tableau->size) == 1
-            if(win_line(*&tableau, column, *&line, tableau->size) == 1){
-                printf("Win");
-            } else {
-                printf("No win");
-            }
+
 
     } while (action_impossible);
+
+    //win_diag(*&tableau, column, *&line, tableau->size) == 1
+    //win_column(*&tableau, column, tableau->size) == 1 || win_line(*&tableau, column, *&line, tableau->size) == 1
+    if(win_line(*&tableau, column, *&line, tableau->size) == 1){
+        printf("Win");
+    } else {
+        printf("No win");
+    }
+
     return continu_game;
 }
 
