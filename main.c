@@ -43,7 +43,7 @@ int main(void) {
             case 3: run_program=0;
                 continue;
         }
-        // afficher les règles
+        // show the rules
 
 
 

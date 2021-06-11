@@ -1,8 +1,137 @@
 #include "save_func.h"
 
-int win_column(grid *ptr, int column, int i);
-int win_line(grid *ptr, int column,int *line, int i);
-int win_diag(grid *ptr, int column,int *line, int i);
+int win_column(grid *matrix, int column){ // token_win = number of token you need to win
+    int win;
+    int i = matrix->size - 1 ; // because the coordonate of the grid start at 0
+    int check = 0; // initialize the check win to 0
+    int token_win = matrix->size - 3; //for win you just need to compairs each pair of n-1
+    while(i <= matrix->size && check != token_win && matrix->list[i][column] != ' '){ //do the check only if the column exist and if if doesn't win yet and if the case isn't empty
+        if (matrix->list[i][column] == matrix->list[i-1][column]) // check if the token if the same than above
+        {
+            check++; //+1 if yes
+        } else {
+            check = 0;//return to 0 if no
+        }
+        i--;
+
+    }
+    if(check == token_win){//it's for say if it's a win or not
+
+        win = 1;
+
+    } else {
+        win = 0;
+
+    }
+
+
+    return win;
+
+}
+
+int win_line(grid *matrix,int column,int *line) {
+
+    int win; //same as the column
+    int i = column; //which column he play
+    int check = 0;
+    int token_win = matrix->size - 3;
+    while (i <= matrix->size && check != token_win && matrix->list[*line][i] != ' ') {
+        if (matrix->list[*line][i] == matrix->list[*line][i + 1]) { //check for the right
+            check++;
+            i++;
+        } else { // if the token isn't the same check in the other direction start for where he play
+            check = 0;
+            i = column; //reset which column he play
+            while (i <= matrix->size && check != token_win && i > 0 && matrix->list[*line][i] != ' ') { //check for the left
+                if (matrix->list[*line][i] == matrix->list[*line][i -1]) {
+                    check++;
+                } else {
+                    check = 0;
+                }
+                i--;
+            }
+        }
+
+        if (check == token_win) {
+
+            win = 1;
+
+        } else {
+
+            win = 0;
+
+        }
+
+
+        return win;
+    }
+}
+
+int win_diag(grid *matrix,int column,int *line) {
+
+    int win;
+    int l = *line; //for the diagonal we need to change the value of the line and the column
+    int c = column;
+    int check = 0;
+    int token_win = matrix->size- 3;
+    while (check != token_win && matrix->list[l][c]!= ' ') { //first we see if he win from bottom left to top righ
+        if (matrix->list[l][c] == matrix->list[l + 1][c - 1] && l <= matrix->size && c >= 0) {
+            check++;
+            l++;
+            c--;
+        } else {
+            check = 0;
+            l = *line;
+            c = column;
+            while (l >= 0 && c <= matrix->size && check != token_win && matrix->list[l][c] != ' ') {
+                if (matrix->list[l][c] == matrix->list[l - 1][c + 1]) {
+                    check++;
+                } else {
+                    check = 0;
+                }
+                l--;
+                c++;
+            }
+        }
+    }
+    l = *line;//reset line and column to check the other direction
+    c = column;
+    while (check != token_win && matrix->list[l][c]!= ' ') {// from top left to bottom right
+        if (matrix->list[l][c] == matrix->list[l + 1][c + 1] && l <= matrix->size && c <= matrix->size) {
+            check++;
+            l++;
+            c++;
+        } else {
+            check = 0;
+            l = *line;
+            c = column;
+            while (l >= 0 && c >= 0 && check != token_win && matrix->list[l][c] != ' ') {
+                if (matrix->list[l][c] == matrix->list[l - 1][c - 1]) {
+                    check++;
+                } else {
+                    check = 0;
+                }
+                l--;
+                c--;
+            }
+
+        }
+    }
+
+
+    if (check == token_win) {
+
+        win = 1;
+
+    } else {
+
+        win = 0;
+
+    }
+
+
+    return win;
+}
 
 
 int add_token(grid *tableau, int column, int *line, int player) {
@@ -94,88 +223,14 @@ int menu_play(grid *tableau, int player, int *line, int num_players, int *unusab
 
 
     } while (action_impossible);
-
-    //win_diag(*&tableau, column, *&line, tableau->size) == 1
-    //win_column(*&tableau, column, tableau->size) == 1 || win_line(*&tableau, column, *&line, tableau->size) == 1
-    if(win_line(*&tableau, column, *&line, tableau->size) == 1){
-        printf("Win");
+    if(win_column(*&tableau, column) == 1 || win_line(*&tableau, column, *&line) == 1 ||win_diag(*&tableau, column, *&line)){
+        printf("The player %d win !!", player);
+        exit(EXIT_SUCCESS);
     } else {
-        printf("No win");
+
     }
 
     return continu_game;
-}
-
-
-
-int win_column(grid *matrix, int column, int token_win){ // token_win = nombre de jeton qu'il faut aligner pour gagner
-    int win;
-    int i = matrix->size;
-    int check = 0;
-    token_win = token_win-3; // for the number to win
-
-    while(i <= matrix->size && check != token_win && matrix->list[i][column] != ' '){
-        if (matrix->list[i][column] == matrix->list[i-1][column])
-        {
-            check++;
-        } else {
-            check = 0;
-        }
-        i--;
-        printf("%d", check);
-
-    }
-    if(check == token_win){
-
-        win = 1;
-
-    } else {
-        win = 0;
-
-    }
-
-
-    return win;
-
-}
-
-int win_line(grid *matrix,int column,int *line, int token_win) {
-
-    int win;
-    int i = *line;
-    int check = 0;
-    token_win = token_win - 3;
-
-    while (i <= matrix->size && check != token_win && matrix->list[i][column] != ' ') {
-        if (matrix->list[i][column] == matrix->list[i + 1][column]) {
-            check++;
-            i++;
-        } else {
-            check = 0;
-            i = *line;
-            while (i <= matrix->size && check != token_win && i > 0) {
-                if (matrix->list[i][column] == matrix->list[i - 1][column]) {
-                    check++;
-                } else {
-                    check = 0;
-                }
-                i--;
-            }
-        }
-
-        if (check == token_win) {
-
-            win = 1;
-
-        } else {
-
-            win = 0;
-
-        }
-
-
-        return win;
-    }
 }
 
 void AI(grid *matrix,int *unusable_column){
@@ -209,45 +264,7 @@ void AI(grid *matrix,int *unusable_column){
     }while(action_impossible);
 }
 
-int win_diag(grid *matrix,int column,int *line, int token_win) {
 
-    int win;
-    int i = *line;
-    int check = 0;
-    token_win = token_win - 3;
-    while (i <= matrix->size && check != token_win && matrix->list[i][column] != ' ') {
-        printf("1 : %c // 2 : %c\n", matrix->list[i][column], matrix->list[i + 1][column - 1]);
-        if (matrix->list[i][column] == matrix->list[i + 1][column - 1]) {
-            check++;
-            i++;
-        } else {
-            check = 0;
-            i = *line;
-            printf("1 : %c // 2 : %c\n", matrix->list[i][column], matrix->list[i - 1][column + 1]);
-            while (i <= matrix->size && check != token_win && i > 0) {
-                if (matrix->list[i][column] == matrix->list[i - 1][column + 1]) {
-                    check++;
-                } else {
-                    check = 0;
-                }
-                i--;
-            }
-        }
-
-        if (check == token_win) {
-
-            win = 1;
-
-        } else {
-
-            win = 0;
-
-        }
-
-
-        return win;
-    }
-}
 
 #ifndef PUISSANCE_N_GRID_H
 #define PUISSANCE_N_GRID_H
