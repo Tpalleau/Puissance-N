@@ -77,7 +77,9 @@ int menu_play(grid *tableau, int player, int *line, int num_players, int *unusab
                 break;
             case 2:
                 action_impossible = remove_token(*&tableau, column);
-                *unusable_column = column;
+                if (!action_impossible){
+                    *unusable_column = column;
+                }
                 break;
             case 3:
                 save_file(*tableau, num_players, player, *unusable_column);
@@ -174,6 +176,37 @@ int win_line(grid *matrix,int column,int *line, int token_win) {
 
         return win;
     }
+}
+
+void AI(grid *matrix,int *unusable_column){
+    int choice;
+    int column;
+    int action_impossible;
+    int line;
+
+
+    do {
+        choice = rand() % 2;
+        column = rand() % matrix->size;
+
+        switch (choice){
+            case 0:
+                if (column != *unusable_column){
+                    action_impossible = add_token(*&matrix, column, &line, 2);
+                    *unusable_column = -1;
+                }else{
+                    action_impossible = 1;
+                }
+                break;
+
+            case 1:
+                action_impossible = remove_token(*&matrix,column);
+                if( !action_impossible){
+                    unusable_column = column;
+                }
+
+        }
+    }while(action_impossible);
 }
 
 int win_diag(grid *matrix,int column,int *line, int token_win) {

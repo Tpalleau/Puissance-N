@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
+#include <time.h>
 
 #include "grid.h"
 #include "menu_func.h"
@@ -22,6 +21,8 @@ int main(void) {
     // main variables
     int player = 1;
     grid tableau;
+
+    srand(time(0));
 
     //app loop
     while (run_program){
@@ -55,7 +56,7 @@ int main(void) {
 
             if (player == 1){
                 if (num_player == 1){
-                    printf("find a friend the computer doesnt want to play with you\n");
+                    AI(&tableau, &unusable_column);
                 }else{
                     player = 2;
                 }
