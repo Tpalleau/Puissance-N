@@ -79,7 +79,7 @@ int win_diag(grid *matrix,int column,int *line) {
 
     //bottom left to top right
     while (check != token_win && i < token_win) { //while no victory or checked more than win range
-        if ((l - i <= matrix->size - 1 && c + i>= 0)) { //check only in grid range
+        if (l - i <= matrix->size - 1 && c + i>= 0) { //check only in grid range
             if (l - i >= 0 && c + i<= matrix->size - 1){
                 if (matrix->list[l][c] == matrix->list[l - i][c + i]) {//if is equal to player token check +1
                     check++;
@@ -99,15 +99,15 @@ int win_diag(grid *matrix,int column,int *line) {
     }else{
 
         //reset values
-        int i = - (matrix->size - 3);
-        int check = 0;
+        i = - (matrix->size - 3);
+        check = 0;
 
         //top left to bottom right
         while (check != token_win && i < token_win) { //while no victory or checked more than win range
 
-            if (l + i >= 0 && c - i<= matrix->size - 1) { //check of start in range else pass
-                if (l + i <= matrix->size - 1 && c - i>= 0){//check of end in range else quit
-                    if (matrix->list[l][c] == matrix->list[l + i][c - i]) {
+            if (l + i >= 0 && c + i>= 0) { //check of start in range else pass
+                if (l + i <= matrix->size - 1 && c + i<= matrix->size - 1){//check of end in range else quit
+                    if (matrix->list[l][c] == matrix->list[l + i][c + i]) {
                         check++;
                     }else{
                         check = 0;
