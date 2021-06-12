@@ -69,66 +69,60 @@ int win_line(grid *matrix,int column,int *line) {
 
 int win_diag(grid *matrix,int column,int *line) {
 
-    int win;
+    int win = 0;
     int l = *line; //for the diagonal we need to change the value of the line and the column
     int c = column;
+    int i = - (matrix->size - 3);
     int check = 0;
-    int token_win = matrix->size- 3;
-    while (check != token_win && matrix->list[l][c]!= ' ') { //first we see if he win from bottom left to top righ
-        if (matrix->list[l][c] == matrix->list[l + 1][c - 1] && l <= matrix->size && c >= 0) {
-            check++;
-            l++;
-            c--;
-        } else {
-            check = 0;
-            l = *line;
-            c = column;
-            while (l >= 0 && c <= matrix->size && check != token_win && matrix->list[l][c] != ' ') {
-                if (matrix->list[l][c] == matrix->list[l - 1][c + 1]) {
+    int token_win = matrix->size - 2; //num of compared times needed to win
+
+
+    //bottom left to top right
+    while (check != token_win && i < token_win) { //while no victory or checked more than win range
+        if ((l - i <= matrix->size - 1 && c + i>= 0)) { //check only in grid range
+            if (l - i >= 0 && c + i<= matrix->size - 1){
+                if (matrix->list[l][c] == matrix->list[l - i][c + i]) {//if is equal to player token check +1
                     check++;
-                } else {
+                }else{//else reset to 0
                     check = 0;
                 }
-                l--;
-                c++;
+            }else{
+                i = token_win;
+                continue;
             }
         }
+        i++;
     }
-    l = *line;//reset line and column to check the other direction
-    c = column;
-    while (check != token_win && matrix->list[l][c]!= ' ') {// from top left to bottom right
-        if (matrix->list[l][c] == matrix->list[l + 1][c + 1] && l <= matrix->size && c <= matrix->size) {
-            check++;
-            l++;
-            c++;
-        } else {
-            check = 0;
-            l = *line;
-            c = column;
-            while (l >= 0 && c >= 0 && check != token_win && matrix->list[l][c] != ' ') {
-                if (matrix->list[l][c] == matrix->list[l - 1][c - 1]) {
-                    check++;
-                } else {
-                    check = 0;
-                }
-                l--;
-                c--;
-            }
-
-        }
-    }
-
-
-    if (check == token_win) {
-
+    //if win skip check on other diag
+    if (check == token_win){
         win = 1;
+    }else{
 
-    } else {
+        //reset values
+        int i = - (matrix->size - 3);
+        int check = 0;
 
-        win = 0;
+        //top left to bottom right
+        while (check != token_win && i < token_win) { //while no victory or checked more than win range
 
+            if (l + i >= 0 && c - i<= matrix->size - 1) { //check of start in range else pass
+                if (l + i <= matrix->size - 1 && c - i>= 0){//check of end in range else quit
+                    if (matrix->list[l][c] == matrix->list[l + i][c - i]) {
+                        check++;
+                    }else{
+                        check = 0;
+                    }
+                }else{
+                    i = token_win;
+                    continue;
+                }
+            }
+            i++;
+        }
     }
-
+    if (check == token_win) {
+        win = 1;
+    }
 
     return win;
 }
@@ -136,12 +130,13 @@ int win_diag(grid *matrix,int column,int *line) {
 
 int add_token(grid *tableau, int column, int *line, int player) {
     int not_added = 1;
-    for ( *line = tableau->size -1; *line > -1; *line-=1) {
-        if (tableau->list[*line][column] == ' ' && not_added){
+    for ( int i = tableau->size -1; i > -1; i-=1) {
+        if (tableau->list[i][column] == ' ' && not_added){
+            *line = i;
             if (player == 1){
-                tableau->list[*line][column] = 'X';
+                tableau->list[i][column] = 'X';
             }else{
-                tableau->list[*line][column] = 'O';
+                tableau->list[i][column] = 'O';
             }
             not_added = 0;
         }
