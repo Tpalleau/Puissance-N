@@ -1,77 +1,70 @@
 #include "save_func.h"
 
-int win_column(grid *matrix, int column){ // token_win = number of token you need to win
-    int win;
-    int i = matrix->size - 1 ; // because the coordonate of the grid start at 0
-    int check = 0; // initialize the check win to 0
-    int token_win = matrix->size - 3; //for win you just need to compairs each pair of n-1
-    while(i <= matrix->size && check != token_win && matrix->list[i][column] != ' '){ //do the check only if the column exist and if if doesn't win yet and if the case isn't empty
-        if (matrix->list[i][column] == matrix->list[i-1][column]) // check if the token if the same than above
-        {
-            check++; //+1 if yes
-        } else {
-            check = 0;//return to 0 if no
+int win_column(grid *matrix, int column, int *line){ // token_win = number of token you need to win
+
+    int win = 0;
+    int i = 0;
+    int check = 0;
+    int token_win = matrix->size - 2; //num of compared times needed to win
+
+
+    //from left to right
+    while (check != token_win && i < token_win) { //while no victory or checked more than win range
+        if (*line + i <= matrix->size - 1) { //check in grid from left else pass to next
+
+            if (matrix->list[*line][column] == matrix->list[*line + 1][column]) {//if is equal to player token check +1
+                check++;
+            }else{//else reset to 0
+                check = 0;
+            }
+
+        }else{
+            i = token_win;
+            continue;
         }
-        i--;
-
+        i++;
     }
-    if(check == token_win){//it's for say if it's a win or not
-
+    //if win skip check on other diag
+    if (check == token_win){
         win = 1;
-
-    } else {
-        win = 0;
-
     }
-
-
     return win;
-
 }
 
 int win_line(grid *matrix,int column,int *line) {
 
-    int win; //same as the column
-    int i = column; //which column he play
+    int win = 0;
+    int i = - (matrix->size - 3);
     int check = 0;
-    int token_win = matrix->size - 3;
-    while (i <= matrix->size && check != token_win && matrix->list[*line][i] != ' ') {
-        if (matrix->list[*line][i] == matrix->list[*line][i + 1]) { //check for the right
-            check++;
-            i++;
-        } else { // if the token isn't the same check in the other direction start for where he play
-            check = 0;
-            i = column; //reset which column he play
-            while (i <= matrix->size && check != token_win && i > 0 && matrix->list[*line][i] != ' ') { //check for the left
-                if (matrix->list[*line][i] == matrix->list[*line][i -1]) {
+    int token_win = matrix->size - 2; //num of compared times needed to win
+
+
+    //from left to right
+    while (check != token_win && i < token_win) { //while no victory or checked more than win range
+        if (column + i>= 0) { //check in grid from left else pass to next
+            if (column + i<= matrix->size - 1){//check if in grid from right else quit
+                if (matrix->list[*line][column] == matrix->list[*line][column + i]) {//if is equal to player token check +1
                     check++;
-                } else {
+                }else{//else reset to 0
                     check = 0;
                 }
-                i--;
+            }else{
+                i = token_win;
+                continue;
             }
         }
-
-        if (check == token_win) {
-
-            win = 1;
-
-        } else {
-
-            win = 0;
-
-        }
-
-
-        return win;
+        i++;
     }
+    //if win skip check on other diag
+    if (check == token_win){
+        win = 1;
+    }
+    return win;
 }
 
 int win_diag(grid *matrix,int column,int *line) {
 
     int win = 0;
-    int l = *line; //for the diagonal we need to change the value of the line and the column
-    int c = column;
     int i = - (matrix->size - 3);
     int check = 0;
     int token_win = matrix->size - 2; //num of compared times needed to win
@@ -79,9 +72,9 @@ int win_diag(grid *matrix,int column,int *line) {
 
     //bottom left to top right
     while (check != token_win && i < token_win) { //while no victory or checked more than win range
-        if (l - i <= matrix->size - 1 && c + i>= 0) { //check only in grid range
-            if (l - i >= 0 && c + i<= matrix->size - 1){
-                if (matrix->list[l][c] == matrix->list[l - i][c + i]) {//if is equal to player token check +1
+        if (*line - i <= matrix->size - 1 && column + i>= 0) { //check in grid from left else pass to next
+            if (*line - i >= 0 && column + i<= matrix->size - 1){//check if in grid from right else quit
+                if (matrix->list[*line][column] == matrix->list[*line - i][column + i]) {//if is equal to player token check +1
                     check++;
                 }else{//else reset to 0
                     check = 0;
@@ -105,9 +98,9 @@ int win_diag(grid *matrix,int column,int *line) {
         //top left to bottom right
         while (check != token_win && i < token_win) { //while no victory or checked more than win range
 
-            if (l + i >= 0 && c + i>= 0) { //check of start in range else pass
-                if (l + i <= matrix->size - 1 && c + i<= matrix->size - 1){//check of end in range else quit
-                    if (matrix->list[l][c] == matrix->list[l + i][c + i]) {
+            if (*line + i >= 0 && column + i>= 0) { //check in grid from left else pass
+                if (*line + i <= matrix->size - 1 && column + i<= matrix->size - 1){//check in grid from right else quit
+                    if (matrix->list[*line][column] == matrix->list[*line + i][column + i]) {
                         check++;
                     }else{
                         check = 0;
@@ -218,7 +211,7 @@ int menu_play(grid *tableau, int player, int *line, int num_players, int *unusab
 
 
     } while (action_impossible);
-    if(win_column(*&tableau, column) == 1 || win_line(*&tableau, column, *&line) == 1 ||win_diag(*&tableau, column, *&line)){
+    if(win_column(*&tableau, column, *&line) || win_line(*&tableau, column, *&line) || win_diag(*&tableau, column, *&line)){
         printf("The player %d win !!", player);
         exit(EXIT_SUCCESS);
     } else {
