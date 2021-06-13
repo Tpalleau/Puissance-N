@@ -6,4 +6,4 @@ set(CMAKE_C_STANDARD 11)
 include_directories(.)
 
 add_executable(puissance_N
-        main.c grid.h menu_func.h play_func.h save_func.h)
+        main.c grid.c menu_func.c function.h play_func.c save_func.c)
