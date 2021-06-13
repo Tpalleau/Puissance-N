@@ -15,17 +15,17 @@ int main(void) {
 
 // loops
     int run_program = 1;
-    int play = 1;
+    int play;
 
 // output func variables
     int line = 0;
-    int menu_choice = 0;
+    int menu_choice;
     int num_player = 0;
     int grid_size = 0;
     int unusable_column = -1;
 
 // main variables
-    int player = 1;
+    int player;
 
 
     grid tableau;
@@ -53,7 +53,10 @@ int main(void) {
 
             case 3: run_program=0;
                 continue;
+
         }
+        play = 1;
+        player = 1;
         //game loop
         while (play){
             show_grid(tableau);
@@ -73,7 +76,5 @@ int main(void) {
             }
 
         }
-
-        run_program = 0;
     }
 }

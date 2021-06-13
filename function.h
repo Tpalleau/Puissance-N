@@ -16,7 +16,7 @@ int menu();
 void game_options(int *num_player ,int *grid_size);
 
 //function for play_func.c
-int check_draw(grid *matrix);
+int check_draw(grid matrix);
 int check_win(grid *matrix,int player, int column, int *line);
 int win_column(grid *matrix, int column);
 int win_line(grid *matrix,int column,int *line);

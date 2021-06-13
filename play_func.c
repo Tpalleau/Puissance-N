@@ -2,23 +2,15 @@
 #include <stdlib.h>
 #include "function.h"
 
-int check_draw(grid *matrix){
+int check_draw(grid matrix){
     int draw = 1;
-    int line = matrix->size;
-    int column = 0;
-    while(line < matrix->size  && draw == 1){
-        printf("1");
-        while (column < matrix->size && draw == 1){
-            printf("2");
-            if(matrix->list[line][column] == ' '){
-                printf("3");
+    for (int line = 0; line < matrix.size - 1; ++line) {
+        for (int column = 0; column < matrix.size - 1; ++column) {
+            if (matrix.list[line][column == ' ']){
                 draw = 0;
-            } else {
-                printf("4");
             }
-            column++;
         }
-        line--;
+
     }
     return draw;
 }
@@ -167,33 +159,33 @@ int win_diag(grid *matrix,int column,int *line) {
 }
 
 int add_token(grid *tableau, int column, int *line, int player) {
-    int not_added = 0;
+    int not_added = 1;
     for ( int i = tableau->size -1; i > -1; i-=1) {
-        if (tableau->list[i][column] == ' ' && not_added == 0){
+        if (tableau->list[i][column] == ' ' && not_added){
             *line = i;
             if (player == 1){
                 tableau->list[i][column] = 'X';
             }else{
                 tableau->list[i][column] = 'O';
             }
-            not_added = 1;
+            not_added = 0;
         }
     }
     return not_added;
 }
 
 int remove_token(grid *tableau, int column){
-    int not_removed = 0;
+    int not_removed = 1;
     for ( int line = 0; line < tableau->size; ++line) {
-        if (tableau->list[line][column] != ' ' && not_removed == 0){
+        if (tableau->list[line][column] != ' ' && not_removed){
             if (tableau->list[line][column]){
                 tableau->list[line][column] = ' ';
             }
-            not_removed = 1;
+            not_removed = 0;
         }
 
     }
-    return (not_removed);
+    return not_removed;
 }
 
 int menu_play(grid *tableau, int player, int *line, int num_players, int *unusable_column) {
@@ -234,6 +226,7 @@ int menu_play(grid *tableau, int player, int *line, int num_players, int *unusab
                     action_impossible = add_token(*&tableau, column, *&line, player);
                     *unusable_column = -1;
                 } else {
+                    printf("other player removed in this column before\n");
                     action_impossible = 1;
                 }
                 break;
@@ -246,7 +239,6 @@ int menu_play(grid *tableau, int player, int *line, int num_players, int *unusab
             case 3:
                 save_file(*tableau, num_players, player, *unusable_column);
                 continu_game = 0;
-                exit(EXIT_SUCCESS);
                 break;
         }
 
@@ -256,29 +248,27 @@ int menu_play(grid *tableau, int player, int *line, int num_players, int *unusab
         }
 
 
-    } while (action_impossible == 0);
+    } while (action_impossible);
 
-    if (check_win(*&tableau, player, column, *&line) == 0) {
+    if (check_win(*&tableau, player, column, *&line) == 0 && choice == 1) { //check only if token added
         show_grid(*tableau);
         printf("The player 1 win !!");
-        exit(EXIT_SUCCESS);
+        continu_game = 0;
 
-        return continu_game;
-    }if (check_win(*&tableau, player, column, *&line) == 1) {
+    }if (check_win(*&tableau, player, column, *&line) == 1 && choice == 1) { //check only if token added
         show_grid(*tableau);
         printf("The player 2 win !!");
-        exit(EXIT_SUCCESS);
-
-        return continu_game;
+        continu_game = 0;
     }
-    if(check_draw(*&tableau) == 1){
+
+    if(check_draw(*tableau) == 1){
         show_grid(*tableau);
-        printf("Draw : %d", check_draw(*&tableau));
+        printf("Draw : %d", check_draw(*tableau));
         printf("This is a draw !!");
-        exit(EXIT_SUCCESS);
+        continu_game = 0;
     }
 
-
+    return continu_game;
 }
 
 
@@ -298,6 +288,7 @@ void AI(grid *matrix,int *unusable_column){
                 if (column != *unusable_column){
                     action_impossible = add_token(*&matrix, column, &line, 2);
                     *unusable_column = -1;
+                    printf("the AI has added a token\n");
                 }else{
                     action_impossible = 1;
                 }
@@ -306,7 +297,8 @@ void AI(grid *matrix,int *unusable_column){
             case 1:
                 action_impossible = remove_token(*&matrix,column);
                 if( !action_impossible){
-                    unusable_column = column;
+                    *unusable_column = column;
+                    printf("the AI has removed a token, column %d\n", *unusable_column + 1);
                 }
 
         }
