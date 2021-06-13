@@ -28,7 +28,7 @@ void AI(grid *matrix,int *unusable_column);
 
 //function for save_func.c
 void save_file(grid matrix, int num_players, int turn, int unusable_column);
-void load_file(grid *matrix, int *num_players, int *turn, int *unusable_column);
+int load_file(grid *matrix, int *num_players, int *turn, int *unusable_column);
 
 #ifndef PUISSANCE_N_FUNCTION_H
 #define PUISSANCE_N_FUNCTION_H

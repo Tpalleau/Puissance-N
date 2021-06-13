@@ -23,6 +23,7 @@ int main(void) {
     int num_player = 0;
     int grid_size = 0;
     int unusable_column = -1;
+    int loaded;
 
 // main variables
     int player;
@@ -48,7 +49,11 @@ int main(void) {
 
             case 2:
                 //load file
-                load_file(&tableau, &num_player, &player, &unusable_column);
+                loaded = load_file(&tableau, &num_player, &player, &unusable_column);
+                if (!loaded){
+                    printf("there is no game to load! please do another option\n");
+                    continue;
+                }
                 break;
 
             case 3: run_program=0;

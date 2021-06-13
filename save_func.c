@@ -25,28 +25,35 @@ void save_file(grid matrix, int num_players, int turn, int unusable_column){
     fclose(data);
 }
 
-void load_file(grid *matrix, int *num_players, int *turn, int *unusable_column){
+int load_file(grid *matrix, int *num_players, int *turn, int *unusable_column){
     FILE *data;
     int size;
+    int loaded = 1;
 
     data = fopen("data"," r");
 
-    fscanf(data, "%d", *&num_players);
-    fscanf(data, "%d", *&turn);
-    fscanf(data, "%d", *&unusable_column);
-    fscanf(data, "%d", &size);
-    matrix->size = size;
+    if (data != 0){
+        fscanf(data, "%d", *&num_players);
+        fscanf(data, "%d", *&turn);
+        fscanf(data, "%d", *&unusable_column);
+        fscanf(data, "%d", &size);
+        matrix->size = size;
 
-    char letter;
-    for (int i = 0; i < size; ++i) {
-        letter = getc(data);
-        for (int j = 0; j < size; ++j) {
+        char letter;
+        for (int i = 0; i < size; ++i) {
             letter = getc(data);
-            matrix->list[i][j] = letter;
+            for (int j = 0; j < size; ++j) {
+                letter = getc(data);
+                matrix->list[i][j] = letter;
+            }
         }
+    }else{
+        loaded = 0;
     }
 
     fclose(data);
+
+    return loaded;
 }
 
 #ifndef PUISSANCE_N_SAVE_FUNC_H
