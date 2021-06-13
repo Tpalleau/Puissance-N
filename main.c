@@ -38,6 +38,7 @@ int main(void) {
 
         // play/load/quit
         menu_choice = menu();
+
         switch (menu_choice) {
             case 1:
                 //num of player and grid size
@@ -45,20 +46,18 @@ int main(void) {
                 tableau.size = grid_size;
                 break;
 
-            case 2: load_file(&tableau, &num_player, &player, &unusable_column);
+            case 2:
+                //load file
+                load_file(&tableau, &num_player, &player, &unusable_column);
                 break;
 
             case 3: run_program=0;
                 continue;
         }
-        // show the rules
-
-
-
         //game loop
         while (play){
-            printf("\nplayer %d's turn to play\n\n", player);
             show_grid(tableau);
+            printf("\nplayer %d's turn to play\n\n", player);
 
             play = menu_play(&tableau, player, &line, num_player, &unusable_column);
 

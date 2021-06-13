@@ -4,12 +4,21 @@
 
 int check_draw(grid *matrix){
     int draw = 1;
-    for (int line = 0; line <= matrix-> size ; ++line) {
-        for (int column = 0; column <= matrix->size ; ++column) {
-            if(matrix->list[line][column] != ' '){
+    int line = matrix->size;
+    int column = 0;
+    while(line < matrix->size  && draw == 1){
+        printf("1");
+        while (column < matrix->size && draw == 1){
+            printf("2");
+            if(matrix->list[line][column] == ' '){
+                printf("3");
                 draw = 0;
+            } else {
+                printf("4");
             }
+            column++;
         }
+        line--;
     }
     return draw;
 }
@@ -157,7 +166,6 @@ int win_diag(grid *matrix,int column,int *line) {
     return win;
 }
 
-
 int add_token(grid *tableau, int column, int *line, int player) {
     int not_added = 0;
     for ( int i = tableau->size -1; i > -1; i-=1) {
@@ -263,8 +271,9 @@ int menu_play(grid *tableau, int player, int *line, int num_players, int *unusab
 
         return continu_game;
     }
-    if(check_draw(*&tableau) == 0){
+    if(check_draw(*&tableau) == 1){
         show_grid(*tableau);
+        printf("Draw : %d", check_draw(*&tableau));
         printf("This is a draw !!");
         exit(EXIT_SUCCESS);
     }
