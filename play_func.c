@@ -2,8 +2,11 @@
 #include <stdlib.h>
 #include "function.h"
 
+
+//check if the grid is full
 int check_draw(grid matrix){
     int draw = 1;
+    //loop to check if there have empty case
     for (int line = 0; line < matrix.size - 1; ++line) {
         for (int column = 0; column < matrix.size - 1; ++column) {
             if (matrix.list[line][column == ' ']){
@@ -15,14 +18,16 @@ int check_draw(grid matrix){
     return draw;
 }
 
+//check all the posiblity of win
 int check_win(grid *matrix,int player, int column, int *line){
     int win;
+    //check if one of the three posibility is true
     if (win_column(*&matrix, column) == 1 || win_line(*&matrix, column, *&line) == 1 ||
         win_diag(*&matrix, column, *&line)) {
         if(player == 1 ){
             win = 0;
         } else {
-            win = 1;
+            win = 1; //for player 2
         }
 
     } else {
@@ -31,6 +36,7 @@ int check_win(grid *matrix,int player, int column, int *line){
     return win;
 }
 
+//check only column win
 int win_column(grid *matrix, int column){ // token_win = number of token you need to win
     int win;
     int i = matrix->size - 1 ; // because the coordonate of the grid start at 0
@@ -60,6 +66,7 @@ int win_column(grid *matrix, int column){ // token_win = number of token you nee
 
 }
 
+//check only line win
 int win_line(grid *matrix,int column,int *line) {
 
     int win; //same as the column
@@ -98,6 +105,7 @@ int win_line(grid *matrix,int column,int *line) {
     }
 }
 
+//check only diagonal win
 int win_diag(grid *matrix,int column,int *line) {
 
     int win = 0;
@@ -141,7 +149,7 @@ int win_diag(grid *matrix,int column,int *line) {
                     if (matrix->list[l][c] == matrix->list[l + i][c + i]) {
                         check++;
                     }else{
-                        check = 0;
+                        check = 0;//reset to 0 if not
                     }
                 }else{
                     i = token_win;
@@ -158,8 +166,10 @@ int win_diag(grid *matrix,int column,int *line) {
     return win;
 }
 
+//when the player want to add a token
 int add_token(grid *tableau, int column, int *line, int player) {
     int not_added = 1;
+    //loop until there is a blank to add a token (start bottom to top)
     for ( int i = tableau->size -1; i > -1; i-=1) {
         if (tableau->list[i][column] == ' ' && not_added){
             *line = i;
@@ -174,8 +184,10 @@ int add_token(grid *tableau, int column, int *line, int player) {
     return not_added;
 }
 
+//When the player want ot remove a token
 int remove_token(grid *tableau, int column){
     int not_removed = 1;
+    //loop until see a token to remove (from top to bottom)
     for ( int line = 0; line < tableau->size; ++line) {
         if (tableau->list[line][column] != ' ' && not_removed){
             if (tableau->list[line][column]){
@@ -188,8 +200,10 @@ int remove_token(grid *tableau, int column){
     return not_removed;
 }
 
+//Menu in game
 int menu_play(grid *tableau, int player, int *line, int num_players, int *unusable_column) {
 
+    //intialise variables
     int continu_game = 1;
     int choice = 0;
     int column = 0;
@@ -261,7 +275,7 @@ int menu_play(grid *tableau, int player, int *line, int num_players, int *unusab
         continu_game = 0;
     }
 
-    if(check_draw(*tableau) == 1){
+    if(check_draw(*tableau) == 1){//check if the grid is full
         show_grid(*tableau);
         printf("Draw : %d", check_draw(*tableau));
         printf("This is a draw !!");
@@ -271,8 +285,10 @@ int menu_play(grid *tableau, int player, int *line, int num_players, int *unusab
     return continu_game;
 }
 
-
+//the robot who play if you are alone
 void AI(grid *matrix,int *unusable_column){
+
+    //initialise variables
     int choice;
     int column;
     int action_impossible;
@@ -280,9 +296,11 @@ void AI(grid *matrix,int *unusable_column){
 
 
     do {
+        //the AI thicks about his moove...
         choice = rand() % 2;
         column = rand() % matrix->size;
 
+        //...and do the moove
         switch (choice){
             case 0:
                 if (column != *unusable_column){

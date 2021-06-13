@@ -51,12 +51,15 @@ int main(void) {
                 load_file(&tableau, &num_player, &player, &unusable_column);
                 break;
 
-            case 3: run_program=0;
+            case 3:
+                //exit game
+                run_program=0;
                 continue;
 
         }
         play = 1;
         player = 1;
+
         //game loop
         while (play){
             show_grid(tableau);
@@ -64,6 +67,7 @@ int main(void) {
 
             play = menu_play(&tableau, player, &line, num_player, &unusable_column);
 
+            //check if the player is alone or not
             if (player == 1){
                 if (num_player == 1){
                     AI(&tableau, &unusable_column);

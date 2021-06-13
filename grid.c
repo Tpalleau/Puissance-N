@@ -2,15 +2,17 @@
 #include <stdlib.h>
 #include "function.h"
 
+//initialise the grid
 void reset(grid *matrix){
 
     //empty list
     for (int i = 0; i < list_length; ++i) {
         for (int j = 0; j < list_length - 1; ++j) {
-            matrix->list[i][j] = ' ';
+            matrix->list[i][j] = ' ';//delete any potential character on the grid
         }
     }
 }
+//create a fancy grid
 void show_grid(grid matrix){
     //top part of the table
     printf("\n%c", 201);
