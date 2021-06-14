@@ -27,19 +27,15 @@ void save_file(grid matrix, int num_players, int turn, int unusable_column){
     fclose(data);
 }
 
-<<<<<<< HEAD
-int load_file(grid *matrix, int *num_players, int *turn, int *unusable_column){
-=======
 //load a game if you have one
-void load_file(grid *matrix, int *num_players, int *turn, int *unusable_column){
->>>>>>> master
+int load_file(grid *matrix, int *num_players, int *turn, int *unusable_column){
+
     FILE *data;
     int size;
     int loaded = 1;
 
     data = fopen("data"," r");
 
-<<<<<<< HEAD
     if (data != 0){
         fscanf(data, "%d", *&num_players);
         fscanf(data, "%d", *&turn);
@@ -49,20 +45,6 @@ void load_file(grid *matrix, int *num_players, int *turn, int *unusable_column){
 
         char letter;
         for (int i = 0; i < size; ++i) {
-=======
-    //read the data
-    fscanf(data, "%d", *&num_players);
-    fscanf(data, "%d", *&turn);
-    fscanf(data, "%d", *&unusable_column);
-    fscanf(data, "%d", &size);
-    matrix->size = size;
-
-    //rewrite on the grid
-    char letter;
-    for (int i = 0; i < size; ++i) {
-        letter = getc(data);
-        for (int j = 0; j < size; ++j) {
->>>>>>> master
             letter = getc(data);
             for (int j = 0; j < size; ++j) {
                 letter = getc(data);
